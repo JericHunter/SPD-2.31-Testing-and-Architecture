@@ -1,24 +1,41 @@
 # by Kami Bigdely
 # Consolidate duplicate conditional fragments
-def add(mix, something):
-    mix.append(something)
-    return mix
+class Drink:
+    def __init__(self):
+        self._mix = []
 
-def mixer_ice_with_cream():
-    print('mixed ice with cream.')
-    return ['ice', 'cream']
+    @property
+    def mix(self):
+        return self._mix
 
-def make_drink(drink, addons):
-    if 'coffee' in drink:
-        mix = []
-        mix = add(mix, 'coffee')
-        mix = add(mix, addons)
-    if 'strawberry milkshake' in drink:
-        mix = []
-        mix = mixer_ice_with_cream()
-        mix = add(mix, 'strawberry')
-        mix = add(mix, addons)
-    return mix
+    @mix.setter
+    def mix(self, addons):
+        if len(self.mix) > 1:
+            print(f'mixed {self.mix} with {addons}')
+        self._mix.extend(addons)
 
-final_drink = make_drink('strawberry milkshake', ['milk','sugar'])
+class Menu(Drink):
+    def __init__(self, drinks):
+        self._drinks = []
+
+        for drink in drinks:
+            self._drinks.append(drink)
+
+    def make_drink(self, drink):
+        if drink in self._drinks:
+            return drink.mix
+
+coffee = Drink()
+coffee.mix = ["coffee"]
+
+ice_cream = Drink()
+ice_cream.mix = ['ice', 'cream']
+
+strawberry_milkshake = ice_cream
+strawberry_milkshake.mix = ['strawberry', 'milk', 'sugar']
+
+
+menu = Menu([coffee, ice_cream, strawberry_milkshake])
+
+final_drink = menu.make_drink(strawberry_milkshake)
 print(final_drink)
