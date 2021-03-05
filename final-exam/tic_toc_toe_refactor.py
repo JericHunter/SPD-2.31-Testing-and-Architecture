@@ -9,6 +9,8 @@
 
 import random
 
+BOARD_NUM = 10
+
 def drawBoard(board):
     # This function prints out the board that it was passed.
 
@@ -100,33 +102,31 @@ def chooseRandomMoveFromList(board, movesList):
     else: # TODO: is this 'else' necessary?
         return None
 
-def getComputerMove(board, computerLetter): # TODO: W0621: Redefining name 'computerLetter' from outer scope. Hint: Fix it according to https://stackoverflow.com/a/25000042/81306
+def getComputerMove(board, letters): # TODO: W0621: Redefining name 'computerLetter' from outer scope. Hint: Fix it according to https://stackoverflow.com/a/25000042/81306
     # Given a board and the computer's letter, determine where to move and return that move.
-    if computerLetter == 'X':
-        playerLetter = 'O'
-    else:
-        playerLetter = 'X'
+    player = letters[0]
+    computer = letters[1]
 
     # Here is our algorithm for our Tic Tac Toe AI:
     # First, check if we can win in the next move
-    for i in range(1, 10):
+    for i in range(1, BOARD_NUM):
         copy = getBoardCopy(board)
         if isSpaceFree(copy, i):
-            makeMove(copy, computerLetter, i)
-            if isWinner(copy, computerLetter):
+            makeMove(copy, computer, i)
+            if isWinner(copy, computer):
                 return i
 
     # Check if the player could win on their next move, and block them.
-    for i in range(1, 10):
+    for i in range(1,BOARD_NUM):
         copy = getBoardCopy(board)
         if isSpaceFree(copy, i):
-            makeMove(copy, playerLetter, i)
-            if isWinner(copy, playerLetter):
+            makeMove(copy, player, i)
+            if isWinner(copy, player):
                 return i
 
     # Try to take one of the corners, if they are free.
     move = chooseRandomMoveFromList(board, [1, 3, 7, 9])
-    if move != None: # TODO: Fix it (Hint: Comparisons to singletons like None should always be done with is or is not, never the equality/inequality operators.)
+    if move is not None: # TODO: Fix it (Hint: Comparisons to singletons like None should always be done with is or is not, never the equality/inequality operators.)
         return move
 
     # Try to take the center, if it is free.
@@ -138,29 +138,26 @@ def getComputerMove(board, computerLetter): # TODO: W0621: Redefining name 'comp
 
 def isBoardFull(board):
     # Return True if every space on the board has been taken. Otherwise return False.
-    for i in range(1, 10):
+    for i in range(1,BOARD_NUM):
         if isSpaceFree(board, i):
             return False
     return True
 
 
-print('Welcome to Tic Tac Toe!')
+def gamePrompt():
+    '''Game Prompt'''
+    print('Welcome to Tic Tac Toe!')
+    while True:
+        assignedLetters = inputPlayerLetter()
+        firstTurn = whoGoesFirst()
+        print(f'The {firstTurn} will go first.')
+        startGame(firstTurn, assignedLetters)
+        if not playAgain():
+            break
 
-# TODO: The following mega code block is a huge hairy monster. Break it down 
-# into smaller methods. Use TODO s and the comment above each section as a guide 
-# for refactoring.
-
-while True:
-    # Reset the board
-    theBoard = [' '] * 10 # TODO: Refactor the magic number in this line (and all of the occurrences of 10 thare are conceptually the same.)
-    playerLetter, computerLetter = inputPlayerLetter()
-    turn = whoGoesFirst()
-    print('The ' + turn + ' will go first.')
-    gameIsPlaying = True # TODO: Study how this variable is used. Does it ring a bell? (which refactoring method?) 
-                         #       See whether you can get rid of this 'flag' variable. If so, remove it.
-
-    while gameIsPlaying: # TODO: Usually (not always), loops (or their content) are good candidates to be extracted into their own function.
-                         #       Use a meaningful name for the function you choose.
+def gamePlay(first,letters)
+    theBoard = [' '] * BOARD_NUM 
+    while True:
         if turn == 'player':
             # Player’s turn.
             drawBoard(theBoard)
@@ -171,13 +168,12 @@ while True:
                 drawBoard(theBoard)
                 print('Hooray! You have won the game!')
                 gameIsPlaying = False
-            else:  # TODO: is this 'else' necessary?
-                if isBoardFull(theBoard):
-                    drawBoard(theBoard)
-                    print('The game is a tie!')
-                    break
-                else:  # TODO: Is this 'else' necessary?
-                    turn = 'computer'
+    
+            if isBoardFull(theBoard):
+                drawBoard(theBoard)
+                print('The game is a tie!')
+                break
+            turn = 'computer'
 
         else:
             # Computer’s turn.
@@ -188,13 +184,10 @@ while True:
                 drawBoard(theBoard)
                 print('The computer has beaten you! You lose.')
                 gameIsPlaying = False
-            else:     # TODO: is this 'else' necessary?
-                if isBoardFull(theBoard):
-                    drawBoard(theBoard)
-                    print('The game is a tie!')
-                    break
-                else: # TODO: Is this 'else' necessary?
-                    turn = 'player'
+            if isBoardFull(theBoard):
+                drawBoard(theBoard)
+                print('The game is a tie!')
+                break
+            turn = 'player'
 
-    if not playAgain():
-        break
+gamePlay(first,letters)
