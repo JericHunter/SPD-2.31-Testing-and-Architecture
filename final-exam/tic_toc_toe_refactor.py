@@ -81,11 +81,11 @@ def isSpaceFree(board, move):
 
 def getPlayerMove(board):
     # Let the player type in their move.
-    move = ' ' # TODO: W0621: Redefining name 'move' from outer scope. Hint: Fix it according to https://stackoverflow.com/a/25000042/81306
-    while move not in '1 2 3 4 5 6 7 8 9'.split() or not isSpaceFree(board, int(move)):
+    playerInput = ' ' 
+    while playerInput not in '1 2 3 4 5 6 7 8 9'.split() or not isSpaceFree(board, int(move)):
         print('What is your next move? (1-9)')
-        move = input()
-    return int(move)
+        playerInput = input()
+    return int(playerInput)
 
 def chooseRandomMoveFromList(board, movesList):
     # Returns a valid move from the passed list on the passed board.
@@ -95,7 +95,7 @@ def chooseRandomMoveFromList(board, movesList):
         if isSpaceFree(board, i):
             possibleMoves.append(i)
 
-    if len(possibleMoves) != 0: # TODO: How would you write this pythanically? (You can google for it!)
+    if possibleMoves: 
         return random.choice(possibleMoves)
     else: # TODO: is this 'else' necessary?
         return None
