@@ -1,18 +1,31 @@
 # by Kami Bigdely
 # Split temporary variable
 
-patty = 70 # [gr]
-pickle = 20 # [gr]
-tomatoes = 25 # [gr]
-lettuce = 15 # [gr]
-buns = 95 # [gr]
-sandwich_weight = (2 * patty + 4 * pickle + 3 * tomatoes + 2 * lettuce
-                + 2 * buns)
-print("NY Burger Weight", sandwich_weight)
-kimchi = 30 # [gr]
-mayo = 5 # [gr]
-golden_fried_onion = 20 # [gr]
-sandwich_weight = (2 * patty + 4 * pickle + 3 * tomatoes 
-                + kimchi + mayo + golden_fried_onion + 2 * buns)
-print("Seoul Kimchi Burger Weight", sandwich_weight)
+class Burger:
+    PATTY = 70
+    PICKLE = 20
+    TOMATO = 25 
+    LETTUCE = 15 
+    BUN = 95 
 
+    def __init__(self, name):
+        self.name = name
+
+    def calc_weight(self):
+        return 2 * self.PATTY + 4 * self.PICKLE + 3 * self.TOMATO + 2 * self.LETTUCE + 2 * self.BUN
+
+    def get_info(self):
+        print(f'{self.name}: {self.calc_weight()} grams')
+
+class SeoulBurger(Burger):
+    KIMCHI = 30
+    MAYO = 5
+
+    def __init__(self, name):
+        super().__init__(name)
+
+    def calc_weight(self):
+        return super().calc_weight() + self.KIMCHI + self.MAYO
+
+ny_burger = Burger('NY Burger').get_info()
+seoul_burger = SeoulBurger('Seoul Kimchi Burger').get_info()
