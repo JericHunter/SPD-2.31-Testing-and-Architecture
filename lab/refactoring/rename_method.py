@@ -21,8 +21,7 @@ li = [5, -1, 43, 32, 87, -100]
 print(get_value(li))
 
 ############################
-def process(sentence):  # TODO: Rename this function to reflect what it's doing.
-    words = sentence[0:].split(' ')
-    return words
+def split_word_by_whitespace(sentence):
+    return sentence[0:].split(' ')
 
 print(process('If you were a vegetable, you’d be a ‘cute-cumber.'))
